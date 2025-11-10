@@ -1,9 +1,25 @@
 import json
 from db.db import SessionLocal, Games
 
-def get_games(id: int):
-    """Jordan"""
-    return "swagger"
+def get_games(id: int): # Jordan
+    """
+    Queries the game database for a game with a given id.
+    If the game is not found, returns an id of -1 with the error 'Game not found'
+    """
+
+    db = SessionLocal()
+
+    # Get game by ID
+    try:
+        selected_game = db.query(Games).filter(Games.id == id).first()
+    finally:
+        db.close()
+
+    # Check for errors
+    if selected_game == None:
+        return {"id": -1, "error": "Game not found"}
+
+    return selected_game
 
 def search_games(title: str):
     """Kenneth"""

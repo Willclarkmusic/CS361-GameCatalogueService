@@ -5,7 +5,7 @@ router = APIRouter(prefix="/games", tags=["games"])
 
 @router.get("/{game_id}") # Jordan
 async def get_games(game_id: int):
-    return
+    return gamesModels.get_games(game_id)
 
 @router.get("/search/{title}") # Kenneth
 async def search_games(title: str):
