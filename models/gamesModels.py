@@ -3,23 +3,15 @@ from db.db import SessionLocal, Games
 
 def get_games(id: int): # Jordan
     """
-    Queries the game database for a game with a given id.
-    If the game is not found, returns an id of -1 with the error 'Game not found'
+    Queries the database for a game with the given id.
+    Returns None if the game is not found
     """
-
     db = SessionLocal()
-
-    # Get game by ID
     try:
         selected_game = db.query(Games).filter(Games.id == id).first()
+        return selected_game
     finally:
         db.close()
-
-    # Check for errors
-    if selected_game == None:
-        return {"id": -1, "error": "Game not found"}
-
-    return selected_game
 
 def search_games(title: str):
     """Kenneth"""
@@ -55,10 +47,15 @@ def get_staff_picks():
     return {"staffPicks": data}
 
 def get_multiple_games(games: list[int]):
+    """
+    Given a list of game IDs, returns a list of those games.
+    Ignores game IDs that are not in the database. 
+    """
     data = []
     for id in games:
         game = get_games(id)
-        data.append(game)
+        if game is not None:
+            data.append(game)
     return data
 
 def get_genres():
