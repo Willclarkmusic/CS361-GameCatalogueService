@@ -9,13 +9,13 @@ async def get_games(game_id: int):
 
 @router.get("/search/{title}") # Kenneth
 async def search_games(title: str):
-    return
+    return gamesModels.search_games(title)
 
 @router.get("/lists") # Abraham
 async def get_lists():
     return gamesModels.get_lists()
 
-@router.get("/lists/trending") # Kenneth
+@router.get("/lists/trending") # Abraham
 async def get_trending():
     return gamesModels.get_trending_games()
 
@@ -29,7 +29,7 @@ async def get_top():
 
 @router.get("/lists/staff-picks") # Kenneth
 async def get_staff_picks():
-    return
+    return gamesModels.get_staff_picks()
 
 @router.get("/genres") # Will
 async def get_genres():
