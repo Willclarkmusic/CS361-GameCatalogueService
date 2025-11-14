@@ -3,8 +3,12 @@ from models import gamesModels
 
 router = APIRouter(prefix="/games", tags=["games"])
 
+<<<<<<< HEAD
 
 @router.get("/{game_id}") # Jordan
+=======
+@router.get("/id/{game_id}") # Jordan
+>>>>>>> bd104a17d26a6f1455c4d7cf55d44ca216544372
 async def get_games(game_id: int):
     return gamesModels.get_games(game_id)
 
@@ -26,7 +30,7 @@ async def get_trending():
 
 @router.get("/lists/featured") # Jordan
 async def get_featured():
-    return
+    return gamesModels.get_featured_games()
 
 
 @router.get("/lists/top") # Will
