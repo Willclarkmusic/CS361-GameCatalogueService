@@ -1,6 +1,7 @@
 # Game Catalogue Service - Communication Contract
 
 ## Overview
+
 The Game Catalogue Service is a RESTful API microservice that provides access to a comprehensive database of video games. It offers endpoints for searching games, retrieving curated game lists, and browsing games by genre.
 
 **Base URL**: `http://localhost:8000`
@@ -21,14 +22,17 @@ The service will start on `http://localhost:8000` by default.
 ## API Endpoints
 
 ### 1. Get Game by ID
+
 **Endpoint**: `GET /games/id/{game_id}`
 
 **Description**: Retrieve detailed information about a specific game by its ID.
 
 **Parameters**:
+
 - `game_id` (path parameter, integer): The unique identifier of the game
 
 **Example Request**:
+
 ```python
 import requests
 
@@ -38,6 +42,7 @@ print(game_data)
 ```
 
 **Example Response**:
+
 ```json
 {
   "id": 1245620,
@@ -61,14 +66,17 @@ print(game_data)
 ---
 
 ### 2. Search Games by Title
+
 **Endpoint**: `GET /games/search/{title}`
 
 **Description**: Search for games by title. Returns up to 8 games that match the search query, with exact matches prioritized.
 
 **Parameters**:
+
 - `title` (path parameter, string): The search query for game title
 
 **Example Request**:
+
 ```python
 import requests
 
@@ -78,6 +86,7 @@ print(search_results)
 ```
 
 **Example Response**:
+
 ```json
 {
   "searched": [
@@ -102,11 +111,13 @@ print(search_results)
 ---
 
 ### 3. Get Available Lists
+
 **Endpoint**: `GET /games/lists`
 
 **Description**: Retrieve a list of all available curated game lists with their endpoints.
 
 **Example Request**:
+
 ```python
 import requests
 
@@ -116,13 +127,14 @@ print(available_lists)
 ```
 
 **Example Response**:
+
 ```json
 {
   "availableLists": [
-    {"name": "trending", "endpoint": "/games/lists/trending"},
-    {"name": "featured", "endpoint": "/games/lists/featured"},
-    {"name": "top", "endpoint": "/games/lists/top"},
-    {"name": "staff-picks", "endpoint": "/games/lists/staff-picks"}
+    { "name": "trending", "endpoint": "/games/lists/trending" },
+    { "name": "featured", "endpoint": "/games/lists/featured" },
+    { "name": "top", "endpoint": "/games/lists/top" },
+    { "name": "staff-picks", "endpoint": "/games/lists/staff-picks" }
   ]
 }
 ```
@@ -130,11 +142,13 @@ print(available_lists)
 ---
 
 ### 4. Get Trending Games
+
 **Endpoint**: `GET /games/lists/trending`
 
 **Description**: Retrieve the top 10 trending games based on a composite score considering Metacritic ratings, Steam ratings, release year, and price.
 
 **Example Request**:
+
 ```python
 import requests
 
@@ -144,6 +158,7 @@ print(trending_games)
 ```
 
 **Example Response**:
+
 ```json
 {
   "trendingGames": [
@@ -161,11 +176,13 @@ print(trending_games)
 ---
 
 ### 5. Get Featured Games
+
 **Endpoint**: `GET /games/lists/featured`
 
 **Description**: Retrieve a curated list of featured games.
 
 **Example Request**:
+
 ```python
 import requests
 
@@ -175,6 +192,7 @@ print(featured_games)
 ```
 
 **Example Response**:
+
 ```json
 {
   "featured": [
@@ -191,11 +209,13 @@ print(featured_games)
 ---
 
 ### 6. Get Top Games
+
 **Endpoint**: `GET /games/lists/top`
 
 **Description**: Retrieve the top 10 games ranked by Metacritic score.
 
 **Example Request**:
+
 ```python
 import requests
 
@@ -205,6 +225,7 @@ print(top_games)
 ```
 
 **Example Response**:
+
 ```json
 {
   "topGames": [
@@ -222,11 +243,13 @@ print(top_games)
 ---
 
 ### 7. Get Staff Picks
+
 **Endpoint**: `GET /games/lists/staff-picks`
 
 **Description**: Retrieve a curated list of games recommended by staff.
 
 **Example Request**:
+
 ```python
 import requests
 
@@ -236,6 +259,7 @@ print(staff_picks)
 ```
 
 **Example Response**:
+
 ```json
 {
   "staffPicks": [
@@ -252,11 +276,13 @@ print(staff_picks)
 ---
 
 ### 8. Get All Genres
+
 **Endpoint**: `GET /games/genres`
 
 **Description**: Retrieve a list of all unique game genres available in the database.
 
 **Example Request**:
+
 ```python
 import requests
 
@@ -266,6 +292,7 @@ print(genres)
 ```
 
 **Example Response**:
+
 ```json
 {
   "genres": [
@@ -286,16 +313,19 @@ print(genres)
 ---
 
 ### 9. Get Games by Genre
+
 **Endpoint**: `GET /games/genres/{genre}?skip={skip}&limit={limit}`
 
 **Description**: Retrieve games filtered by a specific genre with pagination support.
 
 **Parameters**:
+
 - `genre` (path parameter, string): The genre to filter by
 - `skip` (query parameter, integer, optional): Number of items to skip (default: 0)
 - `limit` (query parameter, integer, optional): Number of items to return (default: 10, max: 100)
 
 **Example Request**:
+
 ```python
 import requests
 
@@ -306,6 +336,7 @@ print(genre_games)
 ```
 
 **Example Response**:
+
 ```json
 {
   "genre": "RPG",
@@ -329,6 +360,7 @@ print(genre_games)
 ## How to REQUEST Data
 
 ### Using Python with `requests` library:
+
 ```python
 import requests
 
@@ -344,19 +376,21 @@ else:
 ```
 
 ### Using JavaScript with `fetch`:
+
 ```javascript
 // Make a GET request to any endpoint
-fetch('http://localhost:8000/games/lists/trending')
-  .then(response => response.json())
-  .then(data => {
+fetch("http://localhost:8000/games/lists/trending")
+  .then((response) => response.json())
+  .then((data) => {
     console.log(data);
   })
-  .catch(error => {
-    console.error('Error:', error);
+  .catch((error) => {
+    console.error("Error:", error);
   });
 ```
 
 ### Using cURL:
+
 ```bash
 curl http://localhost:8000/games/id/1245620
 ```
@@ -368,6 +402,7 @@ curl http://localhost:8000/games/id/1245620
 All endpoints return JSON-formatted data. The HTTP response will include:
 
 **HTTP Status Codes**:
+
 - `200 OK`: Request successful, data returned in response body
 - `404 Not Found`: Resource not found (e.g., invalid game ID)
 - `422 Unprocessable Entity`: Invalid request parameters
@@ -375,6 +410,7 @@ All endpoints return JSON-formatted data. The HTTP response will include:
 **Response Format**: All responses are JSON objects. Parse the JSON response to access the data.
 
 **Example in Python**:
+
 ```python
 import requests
 import json
@@ -399,27 +435,28 @@ if response.status_code == 200:
 ```
 
 **Example in JavaScript**:
+
 ```javascript
 // Send request and receive data
-fetch('http://localhost:8000/games/lists/top')
-  .then(response => {
+fetch("http://localhost:8000/games/lists/top")
+  .then((response) => {
     if (response.ok) {
-      return response.json();  // Parse JSON
+      return response.json(); // Parse JSON
     }
-    throw new Error('Network response was not ok');
+    throw new Error("Network response was not ok");
   })
-  .then(data => {
+  .then((data) => {
     // Access the data
     const topGames = data.topGames;
 
     // Process each game
-    topGames.forEach(game => {
+    topGames.forEach((game) => {
       console.log(`Title: ${game.title}`);
       console.log(`Score: ${game.metacriticScore}`);
     });
   })
-  .catch(error => {
-    console.error('Error:', error);
+  .catch((error) => {
+    console.error("Error:", error);
   });
 ```
 
@@ -429,22 +466,26 @@ fetch('http://localhost:8000/games/lists/top')
 
 Each game object contains the following fields:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | integer | Unique game identifier |
-| `title` | string | Game title |
-| `description` | string | Game description |
-| `releaseYear` | integer | Year of release |
-| `imageUrl` | string | URL to game cover image |
-| `developer` | string | Game developer |
-| `publisher` | string | Game publisher |
-| `platform` | array | Platforms available (e.g., ["PC", "PlayStation"]) |
-| `price` | float | Price in USD |
-| `website` | string | Official game website |
-| `genres` | array | Game genres (e.g., ["Action", "RPG"]) |
-| `tags` | array | Game tags/themes |
-| `screenshots` | array | URLs to game screenshots |
-| `metacriticScore` | integer | Metacritic rating (0-100) |
-| `steamRating` | integer | Steam user rating (0-100) |
+| Field             | Type    | Description                                       |
+| ----------------- | ------- | ------------------------------------------------- |
+| `id`              | integer | Unique game identifier                            |
+| `title`           | string  | Game title                                        |
+| `description`     | string  | Game description                                  |
+| `releaseYear`     | integer | Year of release                                   |
+| `imageUrl`        | string  | URL to game cover image                           |
+| `developer`       | string  | Game developer                                    |
+| `publisher`       | string  | Game publisher                                    |
+| `platform`        | array   | Platforms available (e.g., ["PC", "PlayStation"]) |
+| `price`           | float   | Price in USD                                      |
+| `website`         | string  | Official game website                             |
+| `genres`          | array   | Game genres (e.g., ["Action", "RPG"])             |
+| `tags`            | array   | Game tags/themes                                  |
+| `screenshots`     | array   | URLs to game screenshots                          |
+| `metacriticScore` | integer | Metacritic rating (0-100)                         |
+| `steamRating`     | integer | Steam user rating (0-100)                         |
 
 ---
+
+## UML Diagram
+
+![UML Diagram](./images/UML_game_catalog.png)
