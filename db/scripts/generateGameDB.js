@@ -6,28 +6,28 @@ import sqlite3 from "sqlite3";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Helper to parse CSV line
-function parseCSVLine(line) {
-  const result = [];
-  let current = "";
-  let inQuotes = false;
+// // Helper to parse CSV line
+// function parseCSVLine(line) {
+//   const result = [];
+//   let current = "";
+//   let inQuotes = false;
 
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
+//   for (let i = 0; i < line.length; i++) {
+//     const char = line[i];
 
-    if (char === '"') {
-      inQuotes = !inQuotes;
-    } else if (char === "," && !inQuotes) {
-      result.push(current.trim());
-      current = "";
-    } else {
-      current += char;
-    }
-  }
-  result.push(current.trim());
+//     if (char === '"') {
+//       inQuotes = !inQuotes;
+//     } else if (char === "," && !inQuotes) {
+//       result.push(current.trim());
+//       current = "";
+//     } else {
+//       current += char;
+//     }
+//   }
+//   result.push(current.trim());
 
-  return result;
-}
+//   return result;
+// }
 
 // Parse release date to get year
 function getYear(dateStr) {
