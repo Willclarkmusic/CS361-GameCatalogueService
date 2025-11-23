@@ -96,6 +96,7 @@ console.log(`#100: ${top100[99].Name} (${top100[99].totalReviews} reviews)`);
 // Transform to our format (without category and categories fields)
 const transformedGames = [];
 
+// Split this into smaller functions as right now it does too much.
 top100.forEach((game, index) => {
   const appId = game["AppID"];
   const genres = parseList(game["Genres"]);
@@ -135,100 +136,102 @@ top100.forEach((game, index) => {
 
 console.log(`Transformed ${transformedGames.length} games`);
 
+
+// Yall are recreating the whole database every time you run your script?
 // Create SQLite database
-const dbPath = path.join(__dirname, "../gamesdb.db");
+// const dbPath = path.join(__dirname, "../gamesdb.db");
 
-// Delete existing database if it exists
-if (fs.existsSync(dbPath)) {
-  fs.unlinkSync(dbPath);
-  console.log("Deleted existing database");
-}
+// // Delete existing database if it exists
+// if (fs.existsSync(dbPath)) {
+//   fs.unlinkSync(dbPath);
+//   console.log("Deleted existing database");
+// }
 
-console.log("\nCreating SQLite database...");
+// console.log("\nCreating SQLite database...");
 
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error("Error creating database:", err);
-    process.exit(1);
-  }
-  console.log("Database connection established");
-});
+// const db = new sqlite3.Database(dbPath, (err) => {
+//   if (err) {
+//     console.error("Error creating database:", err);
+//     process.exit(1);
+//   }
+//   console.log("Database connection established");
+// });
 
-// Create table
-const createTableSQL = `
-CREATE TABLE games (
-  id TEXT PRIMARY KEY,
-  title TEXT NOT NULL,
-  description TEXT,
-  releaseYear INTEGER,
-  imageUrl TEXT,
-  developer TEXT,
-  publisher TEXT,
-  platform TEXT,
-  price REAL,
-  website TEXT,
-  genres TEXT,
-  tags TEXT,
-  screenshots TEXT,
-  metacriticScore INTEGER,
-  steamRating REAL
-)
-`;
+// // Create table
+// const createTableSQL = `
+// CREATE TABLE IF NOT EXIST games (
+//   id TEXT PRIMARY KEY,
+//   title TEXT NOT NULL,
+//   description TEXT,
+//   releaseYear INTEGER,
+//   imageUrl TEXT,
+//   developer TEXT,
+//   publisher TEXT,
+//   platform TEXT,
+//   price REAL,
+//   website TEXT,
+//   genres TEXT,
+//   tags TEXT,
+//   screenshots TEXT,
+//   metacriticScore INTEGER,
+//   steamRating REAL
+// )
+// `;
 
-db.run(createTableSQL, (err) => {
-  if (err) {
-    console.error("Error creating table:", err);
-    process.exit(1);
-  }
-  console.log("Created games table");
+// db.run(createTableSQL, (err) => {
+//   if (err) {
+//     console.error("Error creating table:", err);
+//     process.exit(1);
+//   }
+//   console.log("Created games table");
 
-  // Insert all games
-  const insertSQL = `
-  INSERT INTO games (
-    id, title, description, releaseYear, imageUrl,
-    developer, publisher, platform, price, website, genres, tags,
-    screenshots, metacriticScore, steamRating
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
+//   // Insert all games
+//   const insertSQL = `
+//   INSERT INTO games (
+//     id, title, description, releaseYear, imageUrl,
+//     developer, publisher, platform, price, website, genres, tags,
+//     screenshots, metacriticScore, steamRating
+//   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//   `;
 
-  const stmt = db.prepare(insertSQL);
+//   const stmt = db.prepare(insertSQL);
 
-  transformedGames.forEach((game) => {
-    stmt.run(
-      game.id,
-      game.title,
-      game.description,
-      game.releaseYear,
-      game.imageUrl,
-      game.developer,
-      game.publisher,
-      JSON.stringify(game.platform),
-      game.price,
-      game.website,
-      JSON.stringify(game.genres),
-      JSON.stringify(game.tags),
-      JSON.stringify(game.screenshots),
-      game.metacriticScore,
-      game.rating
-    );
-  });
+//   transformedGames.forEach((game) => {
+//     stmt.run(
+//       game.id,
+//       game.title,
+//       game.description,
+//       game.releaseYear,
+//       game.imageUrl,
+//       game.developer,
+//       game.publisher,
+//       JSON.stringify(game.platform),
+//       game.price,
+//       game.website,
+//       JSON.stringify(game.genres),
+//       JSON.stringify(game.tags),
+//       JSON.stringify(game.screenshots),
+//       game.metacriticScore,
+//       game.rating
+//     );
+//   });
 
-  stmt.finalize((err) => {
-    if (err) {
-      console.error("Error inserting games:", err);
-      process.exit(1);
-    }
+//   stmt.finalize((err) => {
+//     if (err) {
+//       console.error("Error inserting games:", err);
+//       process.exit(1);
+//     }
 
-    console.log(`✓ Inserted ${transformedGames.length} games`);
+//     console.log(`✓ Inserted ${transformedGames.length} games`);
 
-    // Close database
-    db.close((err) => {
-      if (err) {
-        console.error("Error closing database:", err);
-        process.exit(1);
-      }
+//     // Close database
+//     db.close((err) => {
+//       if (err) {
+//         console.error("Error closing database:", err);
+//         process.exit(1);
+//       }
 
-      console.log("\nDatabase generation complete!");
-    });
-  });
-});
+//       console.log("\nDatabase generation complete!");
+//     });
+//   });
+// });
