@@ -63,49 +63,88 @@ def get_lists():
     }
 
 
+def calculate_metacritic_score(game):
+    """
+    Author: Abraham
+    Calculate Metacritic score component (40% weight, 0-40 points).
+    """
+    if game.metacriticScore:
+        return (game.metacriticScore / 100) * 40
+    return 0
+
+
+def calculate_steam_rating_score(game):
+    """
+    Author: Abraham
+    Calculate Steam rating score component (20% weight, 0-20 points).
+    """
+    if game.steamRating:
+        return (game.steamRating / 100) * 20
+    return 0
+
+
+def calculate_release_year_score(game):
+    """
+    Author: Abraham
+    Calculate release year score (25% weight, 0-25 points).
+    Recent games get higher scores.
+    """
+    if not game.releaseYear:
+        return 0
+    
+    year_diff = datetime.datetime.now().year - game.releaseYear
+    if year_diff <= 1:
+        return 25
+    elif year_diff <= 3:
+        return 25 * (1 - (year_diff - 1) / 2)
+    elif year_diff <= 5:
+        return 25 * 0.2
+    return 0
+
+
+def calculate_price_factor_score(game):
+    """
+    Author: Abraham
+    Calculate price factor score (10% weight, 0-10 points).
+    Rewards reasonably priced games.
+    """
+    if not game.price:
+        return 0
+    
+    if 10 <= game.price <= 60:
+        return 10
+    elif game.price < 10:
+        return 7
+    elif 60 < game.price <= 80:
+        return 5
+    return 0
+
+
+def calculate_quality_threshold_bonus(game):
+    """
+    Author: Abraham
+    Calculate quality bonus (5% weight, 0-5 points).
+    Bonus for high-quality games.
+    """
+    if game.metacriticScore and game.metacriticScore >= 85:
+        return 5
+    elif game.steamRating and game.steamRating >= 90:
+        return 3
+    return 0
+
+
 def calculate_relevance_score(game):
     """
     Author: Abraham
-    Calculate a composite relevance score for trending games
+    Calculate composite relevance score for trending games.
+    Combines all scoring components.
     """
     score = 0
-
-    # Metacritic Score (40% weight) - normalized to 0-40
-    if game.metacriticScore:
-        score += (game.metacriticScore / 100) * 40
-
-    # Steam Rating (20% weight) - normalized to 0-20
-    if game.steamRating:
-        score += (game.steamRating / 100) * 20
-
-    # Release Year Relevance (25% weight) - recent games get higher scores
-    current_year = datetime.datetime.now().year
-    if game.releaseYear:
-        year_diff = current_year - game.releaseYear
-        if year_diff <= 1:  # Games from last year get full points
-            score += 25
-        elif year_diff <= 3:  # Games from last 3 years get partial points
-            score += 25 * (1 - (year_diff - 1) / 2)
-        elif year_diff <= 5:  # Games from last 5 years get minimal points
-            score += 25 * 0.2
-        # Older games get no recency points
-
-    # Price Factor (10% weight) - reasonably priced games get slight boost
-    if game.price:
-        if 10 <= game.price <= 60:  # Sweet spot pricing
-            score += 10
-        elif game.price < 10:  # Very cheap games get partial points
-            score += 7
-        elif 60 < game.price <= 80:  # Expensive but reasonable
-            score += 5
-        # Very expensive games (>$80) get no price points
-
-    # Quality Threshold (5% weight) - bonus for high-quality games
-    if game.metacriticScore and game.metacriticScore >= 85:
-        score += 5
-    elif game.steamRating and game.steamRating >= 90:
-        score += 3
-
+    score += calculate_metacritic_score(game)
+    score += calculate_steam_rating_score(game)
+    score += calculate_release_year_score(game)
+    score += calculate_price_factor_score(game)
+    score += calculate_quality_threshold_bonus(game)
     return score
 
 
