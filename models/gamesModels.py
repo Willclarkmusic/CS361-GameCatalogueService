@@ -31,9 +31,6 @@ def search_games(title: str):
         newTitle = title.lower()
         # if there is an exact match we provide that in the list first
         exactMatch = title.lower()
-        # we search the database with both lower case
-        # if there is an exact match we put that first
-        # we only set a limit to 5
         searched_games = db.query(Games).filter(func.lower(
             Games.title).like(f"%{newTitle}%")).order_by(
             case(
@@ -62,7 +59,7 @@ def get_lists():
         ]
     }
 
-
+# Split these three functions into individual functions. Also reduce the number of comments and concatenate into headers.
 def calculate_relevance_score(game):
     """
     Author: Abraham
