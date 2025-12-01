@@ -1,7 +1,6 @@
 from sqlalchemy import create_engine, Column, Integer, String, Float, Text
 import sqlalchemy
-from sqlalchemy.orm import sessionmaker, Session
-from pydantic import BaseModel
+from sqlalchemy.orm import sessionmaker
 import os
 
 # Database setup - use absolute path to db folder
@@ -10,6 +9,7 @@ DATABASE_URL = f"sqlite:///{os.path.join(BASE_DIR, 'gamesdb.db')}"
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = sqlalchemy.orm.declarative_base()
+
 
 # Database model
 class Games(Base):

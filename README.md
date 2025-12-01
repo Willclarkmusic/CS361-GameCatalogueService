@@ -489,3 +489,24 @@ Each game object contains the following fields:
 ## UML Diagram
 
 ![UML Diagram](./images/UML_game_catalog.png)
+
+---
+
+## Contributors
+
+### Jordan
+- **GET /games/id/{game_id}** - Retrieve game by ID
+- **GET /games/lists/featured** - Get featured games list
+
+### Kenneth
+- **GET /games/search/{title}** - Search games by title
+- **GET /games/lists/staff-picks** - Get staff recommended games
+
+### Abraham
+- **GET /games/lists** - Get available curated lists
+- **GET /games/lists/trending** - Get trending games with composite scoring algorithm
+
+### Will
+- **GET /games/lists/top** - Get top 10 games by Metacritic score
+- **GET /games/genres** - Get all available genres
+- **GET /games/genres/{genre}** - Get games by genre with pagination
